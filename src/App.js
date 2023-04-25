@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import PdfViewerComponent from "./components/PdfViewerComponent";
+import { useState } from "react";
 
 function App() {
+  const [pdfFile, setPdfFile] = useState(null);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <label>
+        PDF:{" "}
+        <input
+          type="file"
+          accept="pdf"
+          onChange={(e) => {
+            const documentBlobObjectUrl = URL.createObjectURL(
+              e.target.files[0]
+            );
+            console.log(documentBlobObjectUrl);
+
+            setPdfFile(documentBlobObjectUrl);
+          }}
+        />
+      </label>
+      <div className="PDF-viewer">
+        {pdfFile ? (
+          <PdfViewerComponent document={pdfFile} />
+        ) : (
+          <h1>Upload a file</h1>
+        )}
+      </div>
     </div>
   );
 }
